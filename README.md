@@ -20,7 +20,7 @@ git clone git@github.com:lancekrogers/tally-take-home.git
 
 ## Configuration
 
-Copy exp.config.yaml to config.yaml and fill in the below empty string fields.  If you are using gmail for your smtp account you will need to enable the gmail api and create an app password
+Copy exp.config.yaml to config.yaml and fill in the below empty string fields.  If you are using gmail for your smtp account you will need to enable the gmail api and create an app password.  DestinationAddress is the email address where you want to receive the notifications.
 
 ```yaml
 TallyApi:
