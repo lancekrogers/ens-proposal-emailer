@@ -9,7 +9,7 @@ build:
 	go build -o ./takehome ./cmd
 
 clean:
-	rm -f ./takehome
+	rm -f ./takehome store.db
 
 test:
 	go test ./...

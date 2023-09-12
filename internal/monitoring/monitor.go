@@ -26,6 +26,7 @@ func NewMonitor(govenorAddress string, tallyApi tally.TallyApi, emailClient *ema
 	}
 }
 
+// StartMonitoring method     Kick off monitoring every 10 seconds
 func (m *Monitor) StartMonitoring(ctx context.Context) {
 	ticker := time.NewTicker(10 * time.Second)
 	defer ticker.Stop()
@@ -45,6 +46,7 @@ func (m *Monitor) StartMonitoring(ctx context.Context) {
 	}
 }
 
+// CheckLastBlock method    Compares proposal block to the block in the db and sends notification if the proposal is newer
 func (m *Monitor) CheckLastBlock(ctx context.Context) error {
 	lastDbBlock, err := m.Store.GetLastProcessedBlock()
 	if err != nil {
@@ -68,6 +70,7 @@ func (m *Monitor) CheckLastBlock(ctx context.Context) error {
 	return nil
 }
 
+// SendProposalEmailNotification method     Sends the proposal email and updates the database with the latest proposals blocknumber
 func (m *Monitor) SendProposalEmailNotification(blockNumber int, propId string, propTitle string) error {
 	// Attempting to send email notification
 	err := m.EmailClient.SendEmail(propId, propTitle)
@@ -75,6 +78,7 @@ func (m *Monitor) SendProposalEmailNotification(blockNumber int, propId string, 
 		// if an error is experienced return the error so that the email will be retried
 		return err
 	}
+	log.Printf("Email notification sent for %v", propId)
 	// Set the current proposal block number as the last processed blocknumber
 	err = m.Store.SetLastProcessedBlock(blockNumber)
 	if err != nil {

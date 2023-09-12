@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-const DB_PATH = "./internal/store/store.db"
+const DB_PATH = "./store.db"
 
 type Config struct {
 	TallyApi              tally.TallyApi
