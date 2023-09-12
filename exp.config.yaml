@@ -1,0 +1,13 @@
+TallyApi:
+  Key: ""
+  Url: "https://api.tally.xyz/query"
+
+EmailSettings: 
+  DestinationAddress: ""
+  SenderUsername: ""
+  SenderPassword: ""
+  Host: "smtp.gmail.com"
+  Port: "587"
+
+ENSGovernanceContract: 
+  Address: "0x323A76393544d5ecca80cd6ef2A560C6a395b7E3"

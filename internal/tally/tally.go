@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -80,13 +80,13 @@ func (t *TallyApi) GetLastProposal(ctx context.Context, governorAddress string) 
 
 	payloadBytes, err := json.Marshal(payload)
 	if err != nil {
-		fmt.Println("Error marshalling the payload:", err)
+		log.Println("Error marshalling the payload:", err)
 		return &Proposal{}, err
 	}
 
 	req, err := http.NewRequest("POST", t.Url, bytes.NewBuffer(payloadBytes))
 	if err != nil {
-		fmt.Println("Error creating the request:", err)
+		log.Println("Error creating the request:", err)
 		return &Proposal{}, err
 	}
 
@@ -96,7 +96,7 @@ func (t *TallyApi) GetLastProposal(ctx context.Context, governorAddress string) 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("Error executing the request:", err)
+		log.Println("Error executing the request:", err)
 		return &Proposal{}, err
 
 	}
@@ -106,7 +106,7 @@ func (t *TallyApi) GetLastProposal(ctx context.Context, governorAddress string) 
 
 	err = json.NewDecoder(resp.Body).Decode(&proposalsResponse)
 	if err != nil {
-		fmt.Println("Error decoding proposal response:", err)
+		log.Println("Error decoding proposal response:", err)
 		return &Proposal{}, err
 	}
 

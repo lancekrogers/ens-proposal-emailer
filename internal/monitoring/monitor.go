@@ -2,7 +2,6 @@ package monitoring
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"tally-takehome/internal/email"
 	"tally-takehome/internal/store"
@@ -28,6 +27,7 @@ func NewMonitor(govenorAddress string, tallyApi tally.TallyApi, emailClient *ema
 
 // StartMonitoring method     Kick off monitoring every 10 seconds
 func (m *Monitor) StartMonitoring(ctx context.Context) {
+	log.Println("Starting ENS proposal monitor")
 	ticker := time.NewTicker(10 * time.Second)
 	defer ticker.Stop()
 
@@ -35,12 +35,12 @@ func (m *Monitor) StartMonitoring(ctx context.Context) {
 		select {
 		case <-ctx.Done():
 			// Context was canceled or expired; stop the monitoring
+			log.Println("Monitor is stopping")
 			return
 		case <-ticker.C:
 			// Run your function
 			if err := m.CheckLastBlock(ctx); err != nil {
-				// Handle error
-				fmt.Printf("Error occurred while checking last block: %v\n", err)
+				log.Printf("Error occurred while checking last block: %v\n", err)
 			}
 		}
 	}
@@ -48,15 +48,18 @@ func (m *Monitor) StartMonitoring(ctx context.Context) {
 
 // CheckLastBlock method    Compares proposal block to the block in the db and sends notification if the proposal is newer
 func (m *Monitor) CheckLastBlock(ctx context.Context) error {
+
 	lastDbBlock, err := m.Store.GetLastProcessedBlock()
 	if err != nil {
 		if err != store.ErrNoLastProcessedBlock {
+			log.Printf("Error while getting last processed block: %v", err)
 			return err
 		}
 	}
 
 	lastProposal, err := m.TallyApi.GetLastProposal(ctx, m.GovenorAddress)
 	if err != nil {
+		log.Printf("Error while getting last proposal: %v", err)
 		return err
 	}
 	lastProposalBlock := lastProposal.Block.Number

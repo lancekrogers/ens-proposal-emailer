@@ -2,6 +2,7 @@ package takehome
 
 import (
 	"context"
+	"log"
 	"tally-takehome/internal/email"
 	monitor "tally-takehome/internal/monitoring"
 	"tally-takehome/internal/store"
@@ -17,6 +18,10 @@ func NewENSMonitoringService(ctx context.Context, cfg *utils.Config) (*ENSMonito
 	db, err := store.NewBoltDBStore(utils.DB_PATH)
 	if err != nil {
 		return nil, err
+	}
+
+	if cfg == nil {
+		log.Panic("Config files not loaded!")
 	}
 
 	monitor := monitor.NewMonitor(
