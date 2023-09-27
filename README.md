@@ -1,4 +1,4 @@
-# Tally backend take-home
+# ENS Proposal Emailer
 
 ## Overview
 
